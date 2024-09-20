@@ -1,0 +1,34 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!$ICONURL = "https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v3.0.0/icons"
+!include $ICONURL/common.puml
+!include $ICONURL/devicons2/sqlite.puml
+!include $ICONURL/font-awesome-5/telegram.puml
+
+left to right direction
+'skinparam linetype ortho
+skinparam componentSpacing 100
+
+' Контекст системы
+Person(user, "Пользователь", "Пользователь взаимодействует с ботом через Telegram")
+System(telegram, "Telegram-клиент", "Telegram-клиент, через который пользователь взаимодействует с ботом", "telegram")
+System_Boundary(fin_bot, "Финансовый Телеграм-бот") {
+    Container(framework, "Исполняющий слой", "Фреймворк?", "Отвечает за обработку сообщений и логику бота")
+    ContainerDb(database, "СУБД", "SQLite", "Хранит Telegram id и сохраненные сценарии пользователей", "sqlite")
+    Container(scenario1, "Анализ из прошлого", "Сценарий", "Взаимодействие с пользователем")    
+    Container(scenario2, "Взгляд в будущее", "Сценарий", "Взаимодействие с пользователем")
+    System_Ext(fin_services, "Финансовые сервисы", "Внешние финансовые системы, с которыми интегрируется бот")
+}
+
+' Взаимодействия
+Rel_Right(user, telegram, "Использует для общения")
+Rel_Down(telegram, framework, "Отправляет сообщения")
+Rel_Down(framework, database, "Сохраняет и получает данные")
+Rel_Right(framework, fin_services, "Интеграции для выполнения финансовых операций")
+Rel_Up(scenario1, fin_services, "Запрашивает финансовые данные")
+Rel_Down(scenario2, fin_services, "Запрашивает финансовые данные")
+
+SHOW_LEGEND()
+@enduml
