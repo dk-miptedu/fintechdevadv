@@ -11,8 +11,9 @@
 - **Сценарий "Анализ из прошлого":** Пользователи могут увидеть, как изменился бы их портфель, если бы они инвестировали в криптовалюту в прошлом. Это позволяет проверить эффективность выбранной стратегии и анализировать исторические данные.
 - **Сценарий "Взгляд в будущее":** Бот создает прогнозы и рекомендации по инвестициям на основе исторических данных, помогая пользователям планировать свои инвестиции на ближайший год.
 
-```plantuml
-@startuml Basic Sample
+<div hidden>
+```
+@startuml firstDiagram
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 Person(admin, "Administrator")
@@ -25,6 +26,9 @@ Rel(admin, web_app, "Uses", "HTTPS")
 Rel(web_app, twitter, "Gets tweets from", "HTTPS")
 @enduml
 ```
+</div>
+
+![](firstDiagram.svg)
 
 ## 2. Функции бота
 
