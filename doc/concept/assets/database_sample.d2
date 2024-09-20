@@ -1,0 +1,48 @@
+Users: {
+User: {
+    shape: sql_table 
+    user_id: int {constraint: primary_key} 
+    telegram_id: varchar
+    name: varchar
+    contact_info: varchar 
+}
+
+Portfolios: {
+    shape: sql_table 
+    portfolio_id:  int {constraint: primary_key} 
+    user_id:  int {constraint: foreign_key} 
+    creation_date: varchar
+    current_value: varchar
+}
+
+Transactions: {
+    shape: sql_table 
+    transaction_id:  int {constraint: primary_key} 
+    portfolio_id:  int {constraint: foreign_key} 
+    transaction_date: timestamp with time zone 
+    amount: number
+    type:  enum(buy/sell)
+}
+Forecasts: {
+    shape: sql_table 
+    forecast_id:  int {constraint: primary_key} 
+    portfolio_id:  int {constraint: foreign_key} 
+    forecast_date: timestamp with time zone 
+    expected_return: varchar
+    strategy_details: varchar
+}
+
+User.user_id -> Portfolios.user_id
+Portfolios.portfolio_id -> Transactions.portfolio_id
+Transactions.portfolio_id -> Forecasts.portfolio_id
+}
+CommonRequestsData: {
+HistoricalData: {
+    shape: sql_table 
+    data_id:  int {constraint: primary_key} 
+    date: timestamp with time zone 
+    crypto_symbol: varchar
+    price: number
+    exchange_rate: number
+}
+}
