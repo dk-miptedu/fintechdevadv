@@ -16,3 +16,6 @@
 
 # Obsidian
 .obsidian/*
+
+# Configs
+.config/
