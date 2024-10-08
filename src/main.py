@@ -1,5 +1,5 @@
 import asyncio
-import logging
+
 from decouple import config # pip install python-decouple
 from aiogram import Bot, Dispatcher, types
 from aiogram.fsm.context import FSMContext
@@ -10,19 +10,16 @@ from aiogram.fsm.storage.memory import MemoryStorage
 import yaml
 import os
 import requests
-import sqlite3
+import sqlite3['token_api']
 from datetime import datetime 
 
 # импорт пользовательских функций
+from LogInit import *
 from TgFunctions import *
 
 # импорт Классов
 from User import *
 from CheckStockStates import *
-
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s') 
-logger = logging.getLogger(__name__)
 
 file_path = '.config/fin_bot_config.yaml'
 
@@ -35,8 +32,8 @@ with open(file_path, 'rt') as config_file:
     config = yaml.safe_load(config_file)
 
 print(config)
-bchange_api = str(config['main'])
-bchange_sl_api = str(config['slave'])
+bchange_api = str(config['token_api']['main'])
+bchange_sl_api = str(config['token_api']['slave'])
 
 tkn = str(config['token_tg'])
 bot = Bot(token=tkn)
