@@ -1,12 +1,13 @@
 # class User
 import sqlite3
 import hashlib
+import os
 # импорт пользовательских функций и инициализация окружения
 from ConfigInit import dblink
 class User():
     def __init__(self, user_id):
         self.user_id = str(user_id)
-        self.db_name = dblink
+        self.db_name = os.path.join(dblink)
         self.create_db()
     
     def hash_user_id(self, user_id):
