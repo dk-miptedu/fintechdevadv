@@ -1,4 +1,6 @@
 import asyncio
+import logging
+from decouple import config # pip install python-decouple
 from aiogram import Bot, Dispatcher, types
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
@@ -11,6 +13,12 @@ import requests
 import sqlite3
 from datetime import datetime 
 
+# импорт Классов
+from User import *
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s') 
+logger = logging.getLogger(__name__)
+
 file_path = '.config/fin_bot_config.yaml'
 
 if not os.path.exists(file_path):
@@ -21,30 +29,9 @@ if not os.path.exists(file_path):
 with open(file_path, 'rt') as config_file:
     config = yaml.safe_load(config_file)
 
-tkn = str(config['token'])
-bot = Bot(token=tkn)
-storage = MemoryStorage()
 
 class CheckStockStates(StatesGroup):
     StockID = State()
-
-class User:
-    def __init__(self, telegram_id):
-        self.telegram_id = telegram_id
-
-    def checkUserRecord(self):
-        with sqlite3.connect('./dbase.db') as conn:
-            cursor = conn.cursor()
-            cursor.execute('''CREATE TABLE IF NOT EXISTS users (telegram_id INTEGER PRIMARY KEY)''')
-            cursor.execute('SELECT * FROM users WHERE telegram_id = ?', (self.telegram_id,))
-            return cursor.fetchone()
-
-    def createUserRecord(self):
-        with sqlite3.connect('./dbase.db') as conn:
-            cursor = conn.cursor()
-            cursor.execute('''CREATE TABLE IF NOT EXISTS users (telegram_id INTEGER PRIMARY KEY)''')
-            cursor.execute('INSERT INTO users (telegram_id) VALUES (?)', (self.telegram_id,))
-            conn.commit()
 
 def check_stock_existance(stock_id):
     url = f'https://iss.moex.com/iss/securities/{stock_id}.json'
@@ -56,7 +43,6 @@ def check_stock_existance(stock_id):
     else:
         print(f"Ошибка при запросе: {response.status_code}")
         return False
-
 
 def get_stock_price(stock_id):
     #https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/sber.json?iss.only=securities&securities.columns=PREVPRICE
@@ -71,8 +57,6 @@ def get_stock_price(stock_id):
         if stock_currency == 'SUR':
             stock_currency = 'RUB'
         return stock_price, stock_currency
-dp = Dispatcher(storage=storage)
-dp['bot'] = bot
 
 # Функция для записи в таблицу с ценами акций
 def record_stock_price(stock_id, stock_price, stock_currency):
@@ -88,6 +72,12 @@ def record_stock_price(stock_id, stock_price, stock_currency):
         cursor.execute('INSERT INTO stock_prices (stock_id, price, currency, timestamp) VALUES (?, ?, ?, ?)', 
                        (stock_id, stock_price, stock_currency, timestamp))
         conn.commit()
+
+tkn = str(config['token'])
+bot = Bot(token=tkn)
+storage = MemoryStorage()        
+dp = Dispatcher(storage=storage)
+dp['bot'] = bot
 
 
 @dp.message(Command(commands=['start']))
