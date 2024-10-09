@@ -17,25 +17,10 @@ class User():
     
     def create_db(self):
         """Создание базы данных и таблиц."""
-        print(self.db_name)
-        print('*'*20)
+        #print(self.db_name)
+        #print('*'*20)
         with sqlite3.connect(self.db_name) as conn:
             cursor = conn.cursor()
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS changers (
-                    id INTEGER PRIMARY KEY,
-                    name TEXT,
-                    reserve INTEGER,
-                    age INTEGER,
-                    listed INTEGER,
-                    positive_reviews INTEGER,
-                    negative_reviews INTEGER,
-                    neutral_reviews INTEGER,
-                    verify BOOLEAN,
-                    country INTEGER,
-                    active BOOLEAN
-                )
-            ''')
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
