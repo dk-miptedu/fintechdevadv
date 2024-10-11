@@ -14,22 +14,29 @@ from datetime import datetime
 from ConfigInit import tkn
 
 # импорт Классов
+#from CreateDB import *
 from User import *
 from CheckStockStates import *
+from BestChange import *
 
 bot = Bot(token=tkn)
 storage = MemoryStorage()        
 dp = Dispatcher(storage=storage)
 dp['bot'] = bot
 
-@dp.message(Command(commands=['start']))
+@dp.message(Command(commands=['start','s']))
 async def start_command(message: types.Message):
+    msg_log = "registration new user"
+    msg_welcome = "Привет! Регистрация прошла успешно"
     user = User(message.from_user.id)
     if user.checkUserRecord() is None:
         user.createUserRecord()
-        await message.reply("Привет! Регистрация прошла успешно")
     else:
-        await message.reply("Привет! Вы уже зарегистрированы")
+        msg_welcome = "Вы уже зарегистрированы)"
+        msg_log = "success user login"
+    user.log_event(msg_log)
+    await message.reply(msg_welcome)
+    
 
 @dp.message(Command('checkStock'))
 async def check_stock_start(message: types.Message, state: FSMContext):

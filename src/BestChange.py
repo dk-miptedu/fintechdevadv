@@ -8,52 +8,16 @@ import threading
 from ConfigInit import dblink, bchange_api_url, bchange_api, bchange_sl_api
 
 api_url= '/'.join ([bchange_api_url,bchange_api])
-
-class ExchangerDB:
+print(f'api_url: {api_url}')
+class BestChange():
     def __init__(self):
         self.db_name = dblink
         self.api_url = api_url
-        self.create_db()
-
-    def create_db(self):
-        """Создание базы данных и таблиц."""
-        #print(self.db_name)
-        #print('*'*20)
-        with sqlite3.connect(self.db_name) as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS changers (
-                    id INTEGER PRIMARY KEY,
-                    name TEXT,
-                    reserve INTEGER,
-                    age INTEGER,
-                    listed INTEGER,
-                    positive_reviews INTEGER,
-                    negative_reviews INTEGER,
-                    neutral_reviews INTEGER,
-                    verify BOOLEAN,
-                    country INTEGER,
-                    active BOOLEAN
-                )
-            ''')
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS currencies (
-                    id INTEGER PRIMARY KEY,
-                    name TEXT,
-                    urlname TEXT,
-                    viewname TEXT,
-                    code TEXT,
-                    crypto BOOLEAN,
-                    cash BOOLEAN,
-                    ps INTEGER,
-                    group_id INTEGER
-                )
-            ''')            
-            conn.commit()
 
     def update_changers(self):
         """Получение данных из API и обновление базы данных."""
-        response = requests.get(self.api_url, headers={'accept': 'application/json'})
+        print(f'update_changers: {self.api_url}/changers/')
+        response = requests.get(f'{self.api_url}/changers/', headers={'accept': 'application/json'})
         
         if response.status_code == 200:
             data = response.json()
@@ -80,12 +44,14 @@ class ExchangerDB:
                         changer['active']
                     ))
                 conn.commit()
+            print("Таблица участников обмена успешно обновлена.")
         else:
             print(f"Ошибка при запросе: {response.status_code}")
 
     def update_currencies(self):
         """Получение данных о валютах из API и обновление базы данных."""
-        response = requests.get(self.api_url, headers={'accept': 'application/json'})
+        print(f'update_changers: {self.api_url}/currencies/')
+        response = requests.get(f'{self.api_url}/currencies/', headers={'accept': 'application/json'})
         
         if response.status_code == 200:
             data = response.json()
@@ -117,6 +83,7 @@ class ExchangerDB:
         """Запуск обновления каждые interval секунд."""
         while True:
             self.update_changers()
+            self.update_currencies()
             time.sleep(interval)
 
     def start_periodic_update(self, interval=600):
