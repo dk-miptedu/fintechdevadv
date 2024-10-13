@@ -18,7 +18,8 @@
 .obsidian/*
 
 # Configs
-.config/*.yaml
+.config/__*.yaml
+*.code-workspace
 
 # database 
 *.db

@@ -26,6 +26,8 @@ class User():
                     CREATE TABLE IF NOT EXISTS user_logs (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        banks_id TEXT,
+                        crypto_id TEXT,
                         event TEXT
                     )
                 ''')

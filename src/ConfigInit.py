@@ -2,6 +2,9 @@ import yaml
 import os
 
 file_path = '.config/__fin_bot_config.yaml'
+if not os.path.isfile(file_path):
+    # Убираем "__" из имени файла
+    file_path = file_path.replace('__', '', 1)
 
 if not os.path.exists(file_path):
     print(os.getcwd())

@@ -34,7 +34,8 @@ class CreateDB():
                     neutral_reviews INTEGER,
                     verify BOOLEAN,
                     country INTEGER,
-                    active BOOLEAN
+                    active BOOLEAN,
+                    url_en TEXT
                 )
             ''')
             cursor.execute('''
