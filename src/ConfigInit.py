@@ -21,7 +21,7 @@ db_name = str(config['db_name'])
 db_users_path = str(config['db_users_path'])
 db_user_db_name_pre = str(config['db_user_db_name_pre'])
 
-print(f'db_users_path: {db_users_path}')
+#print(f'db_users_path: {db_users_path}')
 dblink = os.path.join(db_parh, db_name)
 
 # Проверяем наличие поддиректории, если её нет, создаем

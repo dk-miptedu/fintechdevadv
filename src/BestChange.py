@@ -12,7 +12,7 @@ import logging
 from ConfigInit import dblink, bchange_api_url, bchange_api, bchange_sl_api
 
 api_url= '/'.join ([bchange_api_url,bchange_api])
-print(f'api_url: {api_url}')
+#print(f'api_url: {api_url}')
 class BestChange():
     def __init__(self):
         self.db_name = dblink
@@ -91,6 +91,7 @@ class BestChange():
         result = []
         fiat_code = []
         fiat = self.get_online_banks_currencies()
+        #print(fiat)
         if path_curr == "in":
             fiat_code = ([[item.split(':')[0],curr_code] for item in fiat])
         elif path_curr =="out":
@@ -99,12 +100,14 @@ class BestChange():
             return []
         for i in fiat_code:
             response = requests.get(f'{self.api_url}/presences/{i[0]}-{i[1]}/', headers={'accept': 'application/json'})
+            #print(response)
             if response.status_code == 200:
                 data = response.json()
                 presences = data.get('presences', [])
                 for presence in presences:
                     result.append(f'{presence["pair"]}: {presence["best"]}, количество обменников: {presence["count"]}')
-        logging.debug(f'get_best_rates_fiat count rows: {len(result)}')                    
+        logging.debug(f'get_best_rates_fiat count rows: {len(result)}')   
+        #print(f'BestChage: {result}')                 
         return result    
 
     def get_best_rates(self, pair):
@@ -124,43 +127,10 @@ class BestChange():
         cursor.execute("SELECT url_en FROM changers WHERE id = ?", (changer_id,))
         result = cursor.fetchone()
         return result[0] if result else None    
-
-    def get_best_rates_top(self, pair):
-        """Получить курсы обменных пунков для валютной пары с отклонением в rates% от get_best_rates"""
-        query = 'SELECT positive_reviews FROM changers WHERE id = ?'
-        best_rates = []
-        results = []
-        response = requests.get(f'{self.api_url}/presences/{pair[0]}-{pair[1]}/', headers={'accept': 'application/json'})
-        if response.status_code == 200:
-            data = response.json()
-            presences = data.get('presences', [])
-            for presence in presences:
-                best_rates.append(float(presence["best"]))
-        if len(best_rates)>0:
-            lower_rates = max(best_rates)*0.95
-
-        # /v2/{apiKey}/rates/{fromCurrencyId}-{toCurrencyId}
-            response = requests.get(f'{self.api_url}/rates/{pair[0]}-{pair[1]}/', headers={'accept': 'application/json'})
-            if response.status_code == 200:
-                data = response.json()
-                rates = data.get('rates', {}).get('-'.join(pair),[])
-                conn = sqlite3.connect(self.db_name)
-                for rate in rates:
-                    if lower_rates >= float(rate["rate"]):
-                        changer_id = rate["changer"]
-                
-                        # Получаем URL обменника из таблицы changers в базе данных
-                        changer_url = get_changer_url(changer_id, conn)
-                        
-                        # Добавляем данные в результат, включая URL
-                        results.append([changer_id, rate["rate"], rate["reserve"], changer_url])
-        conn.close()
-        logging.debug(f'get_best_rates_top results - count rows: {len(result)}')           
-        return results
     
     def update_changers(self):
         """Получение данных из API и обновление базы данных."""
-        print(f'update_changers: {self.api_url}/changers/')
+        #print(f'update_changers: {self.api_url}/changers/')
         response = requests.get(f'{self.api_url}/changers/', headers={'accept': 'application/json'})
         
         if response.status_code == 200:
@@ -183,12 +153,13 @@ class BestChange():
                         changer['reviews']['positive'],
                         changer['reviews']['closed'],
                         changer['reviews']['neutral'],
-                        changer['verify'],
-                        changer['country'],
-                        changer['active'],
+                        1 if changer.get('verify', False) else 0,
+                        changer.get('country', 'Unknown'),
+                        1 if changer.get('active', False) else 0,
                         changer['urls'].get('en') or changer['urls'].get('ru', None)  
                     ))
                 conn.commit()
+            #print('conn.commit()')
             logging.info("Таблица участников обмена успешно обновлена.")
         else:
             logging.info(f"Ошибка при запросе: {response.status_code}")

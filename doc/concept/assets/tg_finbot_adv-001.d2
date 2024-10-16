@@ -1,0 +1,66 @@
+direction: right
+classes: {
+  unhealthy: {
+    style: {
+      fill: "#FE7070"
+      stroke: "#F69E03"
+    }
+  }
+}
+Tg_bot:{
+    label:  ""
+    style: {
+    text-transform: uppercase
+    border-radius: 1
+  }
+Py_bot: {
+    label: Tg_bot
+    icon: 	https://docs.aiogram.dev/en/latest/_static/logo.png
+    width: 100
+    height: 400
+    style: {
+      stroke-width: 0
+      fill: "#44C7B1"
+      shadow: true
+      border-radius: 5
+    }
+  }
+db_main{
+    shape: cylinder
+    label: Main_DB
+    icon: https://www.sqlite.org/images/sqlite370_banner.gif
+}
+db_users{
+    shape: cylinder
+    label: User_DB
+    icon: https://www.sqlite.org/images/sqlite370_banner.gif
+    style:{multiple:true}
+}
+}
+API:{
+    shape: cloud
+    label: 'api.bestchange.com'
+    #near: top-left
+}
+
+Person: {
+    #shape: person
+    label: users
+    icon: https://icons.terrastruct.com/essentials%2F359-users.svg
+    style:{multiple:true}
+}
+
+Person <-> Tg_bot.Py_bot
+#web lb.class: load balancer
+
+Tg_bot.Py_bot <- Tg_bot.db_main
+Tg_bot.Py_bot -> Tg_bot.db_users: event\nlog
+Tg_bot.Py_bot <-> API: user\nrequests {
+    style: {
+    animated: true
+    font-color: red
+    }
+  }
+
+  Tg_bot.Py_bot -> Tg_bot.db_main: common data\n(update 600c) {style.stroke-width: 4}
+  Tg_bot.Py_bot <- API: common data\n(update 600c) {style.stroke-width: 4}
