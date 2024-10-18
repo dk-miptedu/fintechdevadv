@@ -1,0 +1,10 @@
+db_parh: 'app_data'
+db_name: 'dbase.db'
+db_users_path: 'db_users'
+db_user_db_name_pre: 'user_'
+token_tg: 'YOURS:API_TELEGRAM_BOT'
+api_url: 'https://www.bestchange.app/v2'
+api_token: 
+  main: '658dba1d7fbcc27f562b660568a6ab4d'
+  slave:
+    - 'c052723ae9659345ec2750dadd880100'
