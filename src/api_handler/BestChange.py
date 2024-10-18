@@ -167,7 +167,7 @@ class BestChange():
 
     def update_currencies(self):
         """Получение данных о валютах из API и обновление базы данных."""
-        print(f'update_changers: {self.api_url}/currencies/')
+        #print(f'update_changers: {self.api_url}/currencies/')
         response = requests.get(f'{self.api_url}/currencies/', headers={'accept': 'application/json'})
         if response.status_code == 200:
             data = response.json()
@@ -223,6 +223,6 @@ class BestChange():
             print("Остановлены обновления общих данных bestChange.")
             self.running = False
             if self.changers_thread is not None:
-                self.changers_thread.join()  # Дожидаемся завершения потока
+                self.changers_thread.join()  
             if self.currencies_thread is not None:
-                self.currencies_thread.join()  # Дожидаемся завершения потока
+                self.currencies_thread.join() 

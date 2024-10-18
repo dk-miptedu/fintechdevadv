@@ -18,12 +18,12 @@ import logging
 
 # импорт пользовательских функций и инициализация окружения
 from ConfigInit import tkn
-from MenuStructure import *
+from main_menu.MenuStructure import *
 
 # импорт Классов
 #from CreateDB importAPI_TOKEN = "ВАШ_ТОКЕН"*
-from User import *
-from BestChange import *
+from user_handler.User import *
+from api_handler.BestChange import *
 
 bot = Bot(token=tkn)
 storage = MemoryStorage()        
@@ -36,7 +36,7 @@ best_change = BestChange()
 # Определяем состояния для FSM (Finite State Machine)
 class ExchangeStates(StatesGroup):
     waiting_for_confirmation = State()
-    waiting_for_currency_count = State()
+    waiting_for_currency_coulog_handler = State()
     waiting_for_currency_code = State()    
 
 
@@ -83,7 +83,7 @@ async def process_currency_code(message: types.Message, state: FSMContext):
             [KeyboardButton(text="Да")],
             [KeyboardButton(text="Нет")]
         ], resize_keyboard=True)
-    await message.answer(f"Число обменников: {changers_count}. Вы готовы подождать?", reply_markup=keyboard)
+    await message.answer(f"Количество RUB-инструментов: {changers_count}. Вы готовы подождать?", reply_markup=keyboard)
     await state.set_state(ExchangeStates.waiting_for_confirmation)
 
 
@@ -100,7 +100,7 @@ async def process_confirmation(message: types.Message, state: FSMContext):
         exchanger_count = user_data['exchanger_count']
         logging.debug(f'text: {text}')  
         path = (lambda text: 'in' if text == 'Купить за RUB' else 'out' if text == 'Продать за RUB' else '')
-        await message.answer(f'Запрашиваем курсы обмена для валюты: {currency_code} в {exchanger_count} обменниках. Работаем...', reply_markup=generate_menu(find_parent_key(menu_structure,text)))       
+        await message.answer(f'Запрашиваем курсы обмена для валюты с кодом = {currency_code} для {exchanger_count} RUB инструментов. Работаем...', reply_markup=generate_menu(find_parent_key(menu_structure,text)))       
         if all_integers([currency_code]):
             pair_best = best_change.get_best_rates_fiat(currency_code,path(text))        
             if pair_best:
@@ -181,12 +181,12 @@ async def help_command(message: types.Message):
         "Привет! Я помогу Вам получить актальную информацию по вариантам обмена фиатных и цифровых валют.\n\n"
         "Покупка криптовалюты за фиатные деньги осуществляется через различные финансовые организации. Обратите внимание, что из-за большого количества операторов обмена курсы могут значительно отличаться.\n"
         "Вот что я могу делать:\n\n"
-        "**Купить за RUB** – Узнайте лучшие курсы для покупки криптовалют за рубли.\n"
-        "**Продать за RUB** – Получите актуальные курсы для продажи криптовалют за рубли.\n"
-        "**Список обменников:** – Список поддерживаемых участников обмена.\n\n"
-        "**Валюты в Банках** – Список поддерживаемых инструментов для ввод/вывода криптовалюты за рубли.\n"
-        "**Криптовалюты:** – Список поддерживаемых криптовалют.\n\n"
-        "**Криптобиржи:** – Список поддерживаемых для использования балансов криптобирж.\n\n"
+        "- **Купить за RUB:** Узнайте лучшие курсы для покупки криптовалют за рубли.\n"
+        "- **Продать за RUB:** Получите актуальные курсы для продажи криптовалют за рубли.\n"
+        "- **Список обменников:** Список поддерживаемых участников обмена.\n"
+        "- **Валюты в Банках:** Список поддерживаемых инструментов для ввод/вывода криптовалюты за рубли.\n"
+        "- **Криптовалюты:** Список поддерживаемых криптовалют.\n"
+        "- **Криптобиржи:** Список поддерживаемых для использования балансов криптобирж.\n"
         "Используйте кнопки в меню для навигации по этим функциям или введите команды вручную.\n"
         "Покупка и продажа криптовалют производится через проверенные обменники, но их количество и условия могут повлиять на итоговые курсы.\n\n"
         "Команды:\n"

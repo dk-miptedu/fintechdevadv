@@ -1,6 +1,14 @@
+import sys
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+src_dir = os.path.join(current_dir, '..', 'src')
+sys.path.append(src_dir)
+
 import unittest
 from aiogram.types import ReplyKeyboardMarkup
-from MenuStructure import generate_menu, get_terminal_points, find_parent_key, all_integers, sorted_list, menu_structure, COMEBACK_BTN
+from main_menu.MenuStructure import generate_menu, get_terminal_points, find_parent_key, all_integers, sorted_list, menu_structure, COMEBACK_BTN
+
 
 class TestMenuStructure(unittest.TestCase):
     
@@ -42,4 +50,4 @@ class TestMenuStructure(unittest.TestCase):
         self.assertEqual(sorted_data_asc[0], "item:3,other")
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=2)

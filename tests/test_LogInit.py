@@ -1,7 +1,14 @@
+import sys
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+src_dir = os.path.join(current_dir, '..', 'src')
+sys.path.append(src_dir)
+
 import unittest
 import logging
 from unittest.mock import patch
-import LogInit  # Assuming LogInit is the file name where logging is configured
+import log_handler.LogInit  # Assuming LogInit is the file name where logging is configured
 
 class TestLogInit(unittest.TestCase):
 
@@ -10,7 +17,7 @@ class TestLogInit(unittest.TestCase):
     def test_logging_setup(self, mock_basicConfig, mock_getLogger):
         # Reload the LogInit module to ensure logging setup runs
         import importlib
-        importlib.reload(LogInit)
+        importlib.reload(log_handler.LogInit)
 
         # Check that logging.basicConfig was called with the expected parameters
         mock_basicConfig.assert_called_once_with(
@@ -19,7 +26,7 @@ class TestLogInit(unittest.TestCase):
         )
 
         # Check that getLogger was called and a logger was created
-        mock_getLogger.assert_called_once_with(LogInit.__name__)
+        mock_getLogger.assert_called_once_with(log_handler.LogInit.__name__)
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=2)

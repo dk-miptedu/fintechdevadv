@@ -2,14 +2,14 @@
 import asyncio
 
 # импорт пользовательских функций и инициализация окружения
-from LogInit import *
+from log_handler.LogInit import *
 #from TgFunctions import *
 
 # импорт workflow чат бота
-from GramBot import *
+from bot_handler.GramBot import *
 
 # импорт Классов
-from CreateDB import *
+from create_db.CreateDB import *
 
 
 # Запуск бота @crypt_helper_basic_bot
@@ -20,5 +20,5 @@ async def main():
 if __name__ == '__main__':
     CreateDB()
     bestChange_db = BestChange()
-    #bestChange_db.start_updates() # Запуск обновления каждые N секунд
+    bestChange_db.start_updates() # Запуск обновления каждые N секунд
     asyncio.run(main())
