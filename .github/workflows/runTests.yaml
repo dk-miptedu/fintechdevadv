@@ -4,9 +4,10 @@ on:
   pull_request:
     branches:
       - dev
-      - dev-hw03
       - main
-
+  push:
+    branches:
+      - dev-hw03
 jobs:
   test:
     runs-on: ubuntu-latest
