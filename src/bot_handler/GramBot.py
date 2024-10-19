@@ -107,7 +107,7 @@ async def process_confirmation(message: types.Message, state: FSMContext):
                 pair_best_list = "\n".join(sorted_list(pair_best))
                 await message.answer(f"Курсы обмена:\n {pair_best_list}")
             else:
-                await message.answer("Нет направлений обмена валюты")
+                await message.answer("Нет RUB инструментов для обмена валюты")
         else:
             await message.answer(f"Ошибка цифрового кода криптовалюты: {message.text}")
         # Возвращаемся к исходному состоянию, если нужно продолжать взаимодействие
