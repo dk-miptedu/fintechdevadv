@@ -162,9 +162,9 @@ async def action_handler(message: types.Message, state: FSMContext):
         currencies=best_change.get_online_banks_currencies()
         if currencies:
             currencies_list = "\n".join(currencies)
-            await message.answer(f"Список валют с кодом RUB:\n{currencies_list}")
+            await message.answer(f"Список инструментов с кодом RUB:\n{currencies_list}")
         else:
-            await message.answer("Нет доступных валют с кодом RUB.")
+            await message.answer("Нет доступных инструментов с кодом RUB.")
     elif selected_menu == "Криптобиржи":
         currencies=best_change.get_crypto_currencies_exchange()
         if currencies:
