@@ -1,2 +1,35 @@
+# Git
+.git
 .gitignore
+
+# Docker
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# Byte-compiled / optimized / DLL files
+app/__pycache__/
 /app_data
+
+# Distribution / packaging
+env/
+
+# Virtual environment
+.env
+
+# PyCharm
+.idea
+
+# user
+logs
+brief.*
+LICENSE
+Procfile
+/app_data
+.coverage
+/.help
+.env
+/__pycache__
+.gitignore
+.DS_Store
+README.md
