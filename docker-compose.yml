@@ -7,7 +7,7 @@ services:
     working_dir: /app
     volumes:
       - ./src:/app  # Подключаем код из папки src
-    command: python -m src.main.py  # Запуск основного файла бота
+    command: python -m src.main  # Запуск основного файла бота
     restart: unless-stopped
     environment:
       - PYTHONUNBUFFERED=1  # Для корректного логгирования
