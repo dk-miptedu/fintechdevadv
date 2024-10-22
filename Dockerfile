@@ -1,15 +1,13 @@
 # Установка Python из официального базового образа
-FROM python:3.10
+FROM python:3.10.12-slim
 
-# Установка рабочей директории внутри будущего контейнера
 WORKDIR /app
 
-# Копирование всех файлов приложения в контейнер
-COPY . /app
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Экспорт порта, на котором будет работать приложение
+COPY . .
+
 EXPOSE 8000
 
-# Запуск тестового Python-приложения
-CMD ["python3", "main.py"]
+CMD ["python3", "src/main.py"]
