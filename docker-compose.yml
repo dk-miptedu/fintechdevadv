@@ -9,6 +9,7 @@ services:
     command: python src/main.py
     restart: unless-stopped
     environment:
+      - TOKEN_TG=${TOKEN_TG}
       - PYTHONPATH=/app    
       - PYTHONUNBUFFERED=1
     networks:

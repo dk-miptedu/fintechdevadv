@@ -17,7 +17,7 @@ def load_config(file_path= '.config/__fin_bot_config.yaml'):
     return config
 
 
-file_path = '.config/__fin_bot_config.yaml'
+file_path = '.config/fin_bot_config.yaml'
 config = load_config(file_path)
 #print(config)
 
@@ -50,6 +50,10 @@ if not os.path.exists(db_users_path):
 bchange_api_url = str(config['api_url'])
 bchange_api = str(config['api_token']['main'])
 bchange_sl_api = config['api_token']['slave']
+
+# Замена значения token_tg на значение из переменной окружения
+if str(config['token_tg']) == 'YOURS:API_TELEGRAM_BOT':
+    config['token_tg'] = os.getenv('TOKEN_TG', 'default_token_value')
 
 tkn = str(config['token_tg'])
 
