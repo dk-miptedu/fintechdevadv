@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   telegram-bot:
     image: python:3.10.12
