@@ -7,11 +7,12 @@ services:
     working_dir: /app
     volumes:
       - ./src:/app/src
-    command: python src/main.py  # Запуск основного файла бота
+      - ./requirements.txt:/app/requirements.txt
+    command: python src/main.py
     restart: unless-stopped
     environment:
       - PYTHONPATH=/app    
-      - PYTHONUNBUFFERED=1  # Для корректного логгирования
+      - PYTHONUNBUFFERED=1
     networks:
       - bot-network
 networks:
