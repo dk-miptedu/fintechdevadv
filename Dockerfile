@@ -3,12 +3,14 @@ FROM python:3.10.12
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-WORKDIR .
-
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+WORKDIR /app
 
 COPY . .
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y gcc
+RUN rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir -r requirements.txt
+
 
 EXPOSE 8000
 
