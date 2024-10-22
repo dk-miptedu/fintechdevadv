@@ -34,24 +34,37 @@ jobs:
       with:
         name: unittest-results
         path: ./tests
+
   prepare-environment:
-    runs-on: self-hosted
+    runs-on: self-hosted  # Работа на VPS
     needs: test
+
     steps:
-      - name: Stop and remove containers, networks
+      - name: Checkout repository on VPS
+        uses: actions/checkout@v3
+
+      - name: Stop and remove old containers
         run: docker-compose down
 
-      - name: Remove unused data
+      - name: Remove unused Docker data
         run: docker system prune -a -f
 
   deploy:
-    runs-on: self-hosted
+    runs-on: self-hosted  # Запуск на удаленном Runner'е (VPS)
     needs: prepare-environment
+
     steps:
-      - name: Checkout repository
+      - name: Checkout repository for deploy
         uses: actions/checkout@v3
 
-      - name: docker-compose up
-        run: docker-compose up -d
+      - name: Start Docker Compose services
+        run: docker-compose up -d --build
+      
+
+
+
+
+
+        
         
   
