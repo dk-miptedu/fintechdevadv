@@ -158,7 +158,7 @@ async def action_handler(message: types.Message, state: FSMContext):
             await message.answer(f"Список криптовалют:\n{currencies_list}")
         else:
             await message.answer("Нет доступных криптовалют с кодом RUB.")
-    elif selected_menu == "Валюты в Банках":
+    elif selected_menu == "Инструменты RUB":
         currencies=best_change.get_online_banks_currencies()
         if currencies:
             currencies_list = "\n".join(currencies)
@@ -184,7 +184,7 @@ async def help_command(message: types.Message):
         "- **Купить за RUB:** Узнайте лучшие курсы для покупки криптовалют за рубли.\n"
         "- **Продать за RUB:** Получите актуальные курсы для продажи криптовалют за рубли.\n"
         "- **Список обменников:** Список поддерживаемых участников обмена.\n"
-        "- **Валюты в Банках:** Список поддерживаемых инструментов для ввод/вывода криптовалюты за рубли.\n"
+        "- **Инструменты RUB:** Список поддерживаемых инструментов для ввод/вывода криптовалюты за рубли.\n"
         "- **Криптовалюты:** Список поддерживаемых криптовалют.\n"
         "- **Криптобиржи:** Список поддерживаемых для использования балансов криптобирж.\n"
         "Используйте кнопки в меню для навигации по этим функциям или введите команды вручную.\n"
@@ -195,4 +195,4 @@ async def help_command(message: types.Message):
     )
     await message.answer(help_text, parse_mode="Markdown")
 
-    "Валюты в Банках", "Криптовалюты", "Криптобиржи" 
+    "Инструменты RUB", "Криптовалюты", "Криптобиржи" 
