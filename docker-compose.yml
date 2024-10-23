@@ -5,8 +5,8 @@ services:
     working_dir: /app
     volumes:
       - ./src:/app/src
-      - ./app_data:/app/app_data
-      - ./db_users:/app/db_users
+      - ~/app_data:/app/app_data
+      - ~/db_users:/app/db_users
     command: python3 src/main.py
     restart: unless-stopped
     environment:
