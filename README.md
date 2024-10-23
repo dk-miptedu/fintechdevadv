@@ -1,3 +1,7 @@
+[![UnitTests Pipeline And Deploy](https://github.com/dk-miptedu/fintechdevadv/actions/workflows/tg_bot_unittests_run.yaml/badge.svg?branch=dev-hw03&event=push)](https://github.com/dk-miptedu/fintechdevadv/actions/workflows/tg_bot_unittests_run.yaml)
+
+[![UnitTests Pipeline And Deploy](https://github.com/dk-miptedu/fintechdevadv/actions/workflows/tg_bot_unittests_run.yaml/badge.svg?branch=main&event=pull_request)](https://github.com/dk-miptedu/fintechdevadv/actions/workflows/tg_bot_unittests_run.yaml)
+
 # Задание
 Необходимо придумать концепцию для бота.
 
