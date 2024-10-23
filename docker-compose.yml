@@ -1,12 +1,11 @@
 services:
   telegram-bot:
-    image: python:3.10.12
+    build: .
     container_name: telegram_bot
     working_dir: /app
     volumes:
       - ./src:/app/src
-      - ./requirements.txt:/app/requirements.txt
-    command: python src/main.py
+    command: python3 src/main.py
     restart: unless-stopped
     environment:
       - TOKEN_TG=${TOKEN_TG}
