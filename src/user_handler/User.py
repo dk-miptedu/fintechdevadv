@@ -67,9 +67,3 @@ class User():
             cursor.execute('SELECT * FROM users WHERE user_id = ?', (hashed_id,))
 
             return cursor.fetchone()
-
-    #def createUserRecord(self):
-    #    with sqlite3.connect(self.db_name) as conn:
-    #        cursor = conn.cursor()
-    #        cursor.execute('INSERT INTO users (telegram_id) VALUES (?)', (self.telegram_id,))
-    #        conn.commit()*/

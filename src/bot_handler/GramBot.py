@@ -126,7 +126,10 @@ async def action_handler(message: types.Message, state: FSMContext):
     selected_menu = message.text
     user.log_event(f'chose: {selected_menu}')
     logging.debug(f'message.text: {message.text}')
+
     if selected_menu == "Купить за RUB":
+        if user.checkUserRecord() is None:
+            user.createUserRecord()
         # Сохраняем текст выбранного пункта меню
         await state.update_data(selected_menu=selected_menu)
         # Переходим в состояние ожидания кода валюты
@@ -141,6 +144,8 @@ async def action_handler(message: types.Message, state: FSMContext):
             await message.answer("Нет доступных продавцов.")        
         
     elif selected_menu == "Продать за RUB":
+        if user.checkUserRecord() is None:
+            user.createUserRecord()    
         # Сохраняем текст выбранного пункта меню
         await state.update_data(selected_menu=selected_menu)
         # Переходим в состояние ожидания кода валюты
