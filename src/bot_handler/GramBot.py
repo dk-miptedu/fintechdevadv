@@ -126,7 +126,7 @@ async def action_handler(message: types.Message, state: FSMContext):
     selected_menu = message.text
     user.log_event(f'chose: {selected_menu}')
     logging.debug(f'message.text: {message.text}')
-    user_registration = 'Зарегестрированный пользователь '
+    user_registration = 'Зарегистрированный пользователь '
 
     if selected_menu == "Купить за RUB":
         if user.checkUserRecord() is None:
