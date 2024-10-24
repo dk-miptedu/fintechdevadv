@@ -122,7 +122,9 @@ async def process_confirmation(message: types.Message, state: FSMContext):
 # Обработка действий в конечных пунктах меню
 @router.message(lambda message: message.text in get_terminal_points(menu_structure, "main_menu"))
 async def action_handler(message: types.Message, state: FSMContext):
-    selected_menu = message.text   
+    user = User(message.from_user.id)
+    selected_menu = message.text
+    user.log_event(f'chose: {selected_menu}')
     logging.debug(f'message.text: {message.text}')
     if selected_menu == "Купить за RUB":
         # Сохраняем текст выбранного пункта меню
