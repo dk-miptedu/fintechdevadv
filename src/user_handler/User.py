@@ -2,6 +2,7 @@
 import sqlite3
 import hashlib
 import os
+import logging
 # импорт пользовательских функций и инициализация окружения
 from ConfigInit import dblink, db_users_path, db_user_db_name_pre
 class User():
@@ -32,7 +33,7 @@ class User():
                     )
                 ''')
                 conn.commit()
-            print(f'Создана база данных для пользователя: {db_name}')
+            logging.debug(f'Создана база данных для пользователя: {db_name}')
 
     def log_event(self, event):
         """Добавление записи в таблицу user_logs."""
@@ -43,7 +44,7 @@ class User():
             cursor = conn.cursor()
             cursor.execute('INSERT INTO user_logs (event) VALUES (?)', (event,))
             conn.commit()
-        print(f'Добавлено событие: "{event}" для пользователя с хешом {hashed_id}.')
+        logging.debug(f'Добавлено событие: "{event}" для пользователя с хешом {hashed_id}.')
 
     
     def createUserRecord(self):
@@ -54,9 +55,9 @@ class User():
             try:
                 cursor.execute('INSERT INTO users (user_id) VALUES (?)', (hashed_id,))
                 conn.commit()             
-                print(f'Пользователь {self.user_id} успешно добавлен.')
+                logging.debug(f'Пользователь {self.user_id} успешно добавлен.')
             except sqlite3.IntegrityError:
-                print(f'Пользователь {self.user_id} уже зарегистрирован.')
+                logging.debug(f'Пользователь {self.user_id} уже зарегистрирован.')
 
     def checkUserRecord(self):
         """Проверка пользователя - внесен ли в базу данных"""
