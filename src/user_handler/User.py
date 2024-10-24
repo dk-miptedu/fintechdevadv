@@ -65,5 +65,6 @@ class User():
         with sqlite3.connect(self.db_name) as conn:
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM users WHERE user_id = ?', (hashed_id,))
+        
+        return cursor.fetchone()
 
-            return cursor.fetchone()

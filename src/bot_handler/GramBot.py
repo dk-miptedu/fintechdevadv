@@ -126,10 +126,13 @@ async def action_handler(message: types.Message, state: FSMContext):
     selected_menu = message.text
     user.log_event(f'chose: {selected_menu}')
     logging.debug(f'message.text: {message.text}')
+    user_registration = 'Зарегестрированный пользователь '
 
     if selected_menu == "Купить за RUB":
         if user.checkUserRecord() is None:
             user.createUserRecord()
+            user_registration = 'Фоновая регистрация пользователя'
+        logging.debug(user_registration)
         # Сохраняем текст выбранного пункта меню
         await state.update_data(selected_menu=selected_menu)
         # Переходим в состояние ожидания кода валюты
@@ -145,7 +148,9 @@ async def action_handler(message: types.Message, state: FSMContext):
         
     elif selected_menu == "Продать за RUB":
         if user.checkUserRecord() is None:
-            user.createUserRecord()    
+            user.createUserRecord() 
+            user_registration = 'Фоновая регистрация пользователя'  
+        logging.debug(user_registration) 
         # Сохраняем текст выбранного пункта меню
         await state.update_data(selected_menu=selected_menu)
         # Переходим в состояние ожидания кода валюты
